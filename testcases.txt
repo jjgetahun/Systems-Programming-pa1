@@ -1,0 +1,265 @@
+CASE 1:
+./tokenizer ""  
+No arguments given!
+
+CASE 2:
+./tokenizer " " 
+Only whitespace entered
+
+CASE 3:
+./tokenizer "  "    
+Only whitespace entered
+
+CASE 4:
+./tokenizer "0" 
+ZERO: 0
+
+CASE 5:
+./tokenizer " 0   " 
+ZERO: 0 
+
+CASE 6:
+./tokenizer ".01"
+STRUCT MEMBER: . 
+OCTAL: 01 
+
+CASE 7:
+./tokenizer "."
+STRUCT MEMBER: . 
+
+CASE 8:
+./tokenizer "(.]"
+LEFT PARENTHESIS: ( 
+STRUCT MEMBER: . 
+RIGHT BRACE: ] 
+
+CASE 9:
+./tokenizer "hello world"
+WORD: hello 
+WORD: world 
+
+CASE 10:
+./tokenizer "(hello world);"
+LEFT PARENTHESIS: ( 
+WORD: hello 
+WORD: world 
+RIGHT PARENTHESIS: ) 
+ERROR: ; Error caused by: [0x3b]
+
+CASE 11:
+./tokenizer " 0 0 0 0001 0x2213"
+ZERO: 0 
+ZERO: 0 
+ZERO: 0 
+OCTAL: 0001 
+HEXADECIMAL: 0x2213 
+
+CASE 12:
+./tokenizer "qwerty123456-+======<><><>< > > > > >              0tuy       "
+WORD: qwerty123456 
+MINUS/SUBTRACT: - 
+PLUS EQUAL: += 
+EQUAL EQUAL: == 
+EQUAL EQUAL: == 
+EQUAL: = 
+LESS THAN: < 
+GREATER THAN: > 
+LESS THAN: < 
+GREATER THAN: > 
+LESS THAN: < 
+GREATER THAN: > 
+LESS THAN: < 
+GREATER THAN: > 
+GREATER THAN: > 
+GREATER THAN: > 
+GREATER THAN: > 
+GREATER THAN: > 
+ZERO: 0 
+WORD: tuy 
+
+CASE 13:
+./tokenizer "abc123 123 0x123ttt 07123zz123 1.23e10123e-10"
+WORD: abc123 
+INTEGER: 123 
+HEXADECIMAL: 0x123 
+WORD: ttt 
+OCTAL: 07123 
+WORD: zz123 
+FLOAT: 1.23e10123 
+WORD: e 
+MINUS/SUBTRACT: - 
+INTEGER: 10 
+
+
+NOTE: > denotes a newline in terminal. 
+CASE 14:
+./tokenizer "    \"hello world   \" 21312 asd 0x1 123 /*hello this is to be ignored*/ but this shou...12312 xxx 0x123adabnm //I think I can test this
+> now maybe? 1230x123 testing te 1 10 0x3 04
+> 
+> "
+DOUBLE QUOTE: "hello world   " 
+INTEGER: 21312 
+WORD: asd 
+HEXADECIMAL: 0x1 
+INTEGER: 123 
+WORD: but 
+WORD: this 
+WORD: shou 
+STRUCT MEMBER: . 
+STRUCT MEMBER: . 
+STRUCT MEMBER: . 
+INTEGER: 12312 
+WORD: xxx 
+HEXADECIMAL: 0x123adab 
+WORD: nm 
+WORD: now 
+WORD: maybe 
+CONDITIONAL OPERATOR: ? 
+INTEGER: 1230 
+WORD: x123 
+WORD: testing 
+WORD: te 
+INTEGER: 1 
+INTEGER: 10 
+HEXADECIMAL: 0x3 
+OCTAL: 04 
+
+
+NOTE: > denotes a newline in terminal. 
+CASE 15:
+./tokenizer "    \"hello world   \" 21312 asd 0x1 123 /*hello this is to be ignored*/ but this shou...12312 xxx 0x123adabnm //I think I can test this
+> now maybe? /*new test, all 
+> of this should be ignored*/ except this here. 
+> 0xTYT"
+DOUBLE QUOTE: "hello world   " 
+INTEGER: 21312 
+WORD: asd 
+HEXADECIMAL: 0x1 
+INTEGER: 123 
+WORD: but 
+WORD: this 
+WORD: shou 
+STRUCT MEMBER: . 
+STRUCT MEMBER: . 
+STRUCT MEMBER: . 
+INTEGER: 12312 
+WORD: xxx 
+HEXADECIMAL: 0x123adab 
+WORD: nm 
+WORD: now 
+WORD: maybe 
+CONDITIONAL OPERATOR: ? 
+WORD: except 
+WORD: this 
+WORD: here 
+STRUCT MEMBER: . 
+ERROR: 0xT Error caused by: [0x54]
+WORD: YT
+
+CASE 16:
+./tokenizer "public class helloworld { //This program will output \"Hello World\" to console.
+> public static void main(String[] args) {
+> System.out.println(\"Hello World\");
+> }
+> }
+> /*I hope you enjoyed this testcase*/"
+WORD: public 
+WORD: class 
+WORD: helloworld 
+ERROR: { Error caused by: [0x7b]
+WORD: public 
+C KEYWORD: static 
+C KEYWORD: void 
+WORD: main 
+LEFT PARENTHESIS: ( 
+WORD: String 
+LEFT BRACE: [ 
+RIGHT BRACE: ] 
+WORD: args 
+RIGHT PARENTHESIS: ) 
+ERROR: { Error caused by: [0x7b]
+WORD: System 
+STRUCT MEMBER: . 
+WORD: out 
+STRUCT MEMBER: . 
+WORD: println 
+LEFT PARENTHESIS: ( 
+DOUBLE QUOTE: "Hello World" 
+RIGHT PARENTHESIS: ) 
+ERROR: ; Error caused by: [0x3b]
+ERROR: } Error caused by: [0x7d]
+ERROR: } Error caused by: [0x7d]
+
+CASE 17:
+./tokenizer "//"
+
+CASE 18:
+./tokenizer "'w' \"hioiiii\" 1230"
+SINGLE QUOTE: 'w' 
+DOUBLE QUOTE: "hioiiii" 
+INTEGER: 1230 
+
+CASE 19:
+./tokenizer "   012234234aabdfbdfb  a   12  asdd1 123a 0.1   123a.   0xABC323123acefd123abc     1.5e-124342341a   0xa134234abcQefa123  0xa341234234abc21312Qefa123 "
+OCTAL: 012234234 
+WORD: aabdfbdfb 
+WORD: a 
+INTEGER: 12 
+WORD: asdd1 
+INTEGER: 123 
+WORD: a 
+FLOAT: 0.1 
+INTEGER: 123 
+WORD: a 
+STRUCT MEMBER: . 
+HEXADECIMAL: 0xABC323123acefd123abc 
+FLOAT: 1.5e-124342341 
+WORD: a 
+HEXADECIMAL: 0xa134234abc 
+WORD: Qefa123 
+HEXADECIMAL: 0xa341234234abc21312 
+WORD: Qefa123
+
+CASE 20:
+./tokenizer "~++===+=}{[]][)(()%=%>><<|&|&&|||="
+ONE'S COMPLEMENT: ~ 
+INCREMENT: ++ 
+EQUAL EQUAL: == 
+EQUAL: = 
+PLUS EQUAL: += 
+ERROR: } Error caused by: [0x7d]
+ERROR: { Error caused by: [0x7b]
+LEFT BRACE: [ 
+RIGHT BRACE: ] 
+RIGHT BRACE: ] 
+LEFT BRACE: [ 
+RIGHT PARENTHESIS: ) 
+LEFT PARENTHESIS: ( 
+LEFT PARENTHESIS: ( 
+RIGHT PARENTHESIS: ) 
+MODULO EQUAL: %= 
+MODULO: % 
+BITWISE RIGHT SHIFT: >> 
+BITWISE LEFT SHIFT: << 
+BITWISE OR: | 
+BITWISE AND/ADDRESS: & 
+BITWISE OR: | 
+LOGICAL AND: && 
+LOGICAL OR: || 
+BITWISE OR EQUAL: |=
+
+CASE 21:
+./tokenizer "0xabc123456adefadg012347834234.<>\"hey\"'hi'/*hello*/0123421346751623473abc123.9152.10E-234891234321//greetings
+> $"
+HEXADECIMAL: 0xabc123456adefad 
+WORD: g012347834234 
+STRUCT MEMBER: . 
+LESS THAN: < 
+GREATER THAN: > 
+DOUBLE QUOTE: "hey" 
+SINGLE QUOTE: 'hi' 
+OCTAL: 0123421346751623473 
+WORD: abc123 
+STRUCT MEMBER: . 
+FLOAT: 9152.10E-234891234321 
+ERROR: $ Error caused by: [0x24]
